@@ -1,0 +1,21 @@
+class Solution {
+    // Returns number of subarrays whose sum is divisible by k
+    // Use long for safety: prefix sums and counts can be large
+    public long subCount(int[] arr, int k) {
+        if (k <= 0) return 0;            // defensive (k >= 1 per problem)
+        long[] freq = new long[k];       // new for each call (no persisting state)
+        freq[0] = 1;                     // empty prefix
+
+        long prefixSum = 0L;
+        long count = 0L;
+
+        for (int i = 0; i < arr.length; i++) {
+            prefixSum += (long) arr[i];
+            int rem = (int) (((prefixSum % k) + k) % k); // remainder in [0, k-1]
+            count += freq[rem];
+            freq[rem]++; 
+        }
+
+        return count;
+    }
+}
